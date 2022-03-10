@@ -1,5 +1,6 @@
 "use strict";
 const jmoment = require("moment-jalaali");
+const axios = require("axios");
 
 /**
  * A set of functions called "actions" for `mercury`
@@ -80,6 +81,81 @@ module.exports = {
         child: children.id
       }
     });
+
+    const requestDapi = (id) => {
+      return axios.get(`https://dapi.pish.run/api/contents/${id}`,{
+        headers: {
+          Authorization: `Bearer ${process.env.DAPI_TOKEN}`
+        }
+      })
+    }
+
+    const promises = [];
+    for (const activity of activities) {
+      promises.push(requestDapi(activity.contentId))
+    }
+
+    const results = Promise.allSettled(promises);
+    for (let result of results) {
+      if (result.state === 'fullfilled') {
+        result = result.value.data;
+        const activity = activities.find(a => a.contentId == result.id);
+
+        result = result.attributes;
+        switch (activity.type) {
+          case 'video':
+            if (result.source == 'filmgardi') {
+              activity.content = {
+                duration: result.meta.duration,
+                sourceLink: result.meta.source[0].src,
+                image: result.meta.poster,
+              }
+            } else if (result.source == 'telewebion') {
+              activity.content = {
+                duration: result.meta.duration,
+                sourceLink: result.meta.source[0].src,
+                image: result.meta.poster[0].url,
+              }
+            }
+            break;
+
+          case 'activity':
+            activity.content = {
+              sourceLink: result.meta.srcFile,
+              description: result.description,
+              image: null,
+            }
+            break;
+
+          case 'game':
+            activity.content = {
+              sourceLink: result.sourceUrl,
+              description: result.description,
+              image: null,
+            }
+            break;
+
+          case 'book':
+            activity.content = {
+              sourceLink: result.srcFile,
+              description: result.description,
+              image: null,
+            }
+            break;
+
+          case 'audio':
+            activity.content = {
+              sourceLink: result.srcFile,
+              description: result.description,
+              image: null,
+              duration: result.meta.chapters[0].duration
+            }
+            break;
+        }
+        
+      }
+    }
+
 
     return {
       "book": activities.filter(a => a.type === "book"),
