@@ -21,6 +21,16 @@ module.exports = {
       },
     },
     {
+      method: "POST",
+      path: "/activities/:childrenId",
+      handler: "mercury.upsertActivity",
+      config: {
+        prefix: "mercury",
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
       method: "GET",
       path: "/children/:id/dashboard",
       handler: "mercury.childrenDashboard",

@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "earth_steps_results",
+  "info": {
+    "singularName": "earth-steps-result",
+    "pluralName": "earth-steps-results",
+    "displayName": "earth-steps-result"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "earth_approach": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::earth-approach.earth-approach"
+    },
+    "earth_root": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::earth-root.earth-root"
+    },
+    "earth_approach_result": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::earth-approach-result.earth-approach-result"
+    },
+    "earth_sign": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::earth-sign.earth-sign"
+    }
+  }
+}

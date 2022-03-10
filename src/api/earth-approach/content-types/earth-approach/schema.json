@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "earth_approaches",
+  "info": {
+    "singularName": "earth-approach",
+    "pluralName": "earth-approaches",
+    "displayName": "earth-approach",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "duration": {
+      "type": "decimal"
+    },
+    "earth_signs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::earth-sign.earth-sign",
+      "mappedBy": "earth_approaches"
+    },
+    "result_description": {
+      "type": "richtext",
+      "required": true
+    },
+    "result_video_link": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
