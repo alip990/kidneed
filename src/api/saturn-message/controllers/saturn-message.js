@@ -27,6 +27,9 @@ module.exports = createCoreController('api::saturn-message.saturn-message' , ({s
     const{text , createdAt , type   } = ctx.request.query
     user = ctx.state.user
     
+    if (!user) 
+      return 'credential not valid';
+
     where = {
       user:user.id , 
       child : childId  , 
